@@ -1,0 +1,217 @@
+[colors]
+background = #00000000
+background-alt = #444
+foreground = ${xrdb:color7}
+foreground-alt = #555
+primary = ${xrdb:color3}
+secondary = ${xrdb:color5}
+alert = #bd2c40
+col = #00f
+
+[bar/top]
+monitor = ${env:MONITOR:}
+width = 100%
+height = 24
+fixed-center = false
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 3
+line-color = {$xrdb:color1}
+
+border-size = 0
+border-color = #00000000
+
+padding-left = 0
+padding-right = 0
+
+module-margin-left = 1
+module-margin-right = 2
+
+font-0 = mono:style=Regular:size=9
+font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
+
+modules-left = i3 mpd
+modules-center = xwindow
+modules-right = filesystem volume wlan eth battery temperature cpu memory date
+
+tray-position = right
+tray-padding = 0
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:100:...%
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+
+mount-0 = /mnt
+mount-1 = /data
+mount-2 = /
+
+label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
+label-unmounted =
+label-unmounted-foreground = ${colors.foreground-alt}
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+
+enable-scroll = false
+enable-click = false
+
+; Only show workspaces on the same monitor/output as the bar
+pin-workspaces = true
+
+label-mode-padding = 2
+label-mode-foreground = #000
+label-mode-background = ${colors.primary}
+
+; focused = Active workspace on focused monitor
+label-focused = %index%
+label-focused-background = ${xrdb:color0}
+label-focused-underline= ${colors.primary}
+label-focused-padding = 2
+
+label-occupied = %index%
+label-occupied-padding = 2
+
+; urgent = Workspace with urgency hint set
+label-urgent = %index%!
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+
+label-empty = %index%
+label-empty-foreground = ${colors.foreground-alt}
+label-empty-padding = 2
+
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %index%
+label-unfocused-padding = ${self.label-occupied-padding}
+
+; visible = Active workspace on unfocused monitor
+label-visible = %index%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+
+[module/mpd]
+type = internal/mpd
+format-online = <label-song> <label-time>
+
+label-song =  %artist% - %title%
+label-song-maxlen = 70
+label-song-ellipsis = true
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = ${xrdb:color1}
+label = %percentage%%
+
+[module/memory]
+type = internal/memory
+interval = 2
+label = "RAM %gb_used%/%gb_free%"
+
+[module/wlan]
+type = internal/network
+interface = ${env:WIRELESS_INTERFACE:}
+interval = 3.0
+
+format-connected = <label-connected>
+format-connected-underline = ${xrdb:color5}
+label-connected = %essid% ↑%upspeed% ↓%downspeed%
+
+format-disconnected = <label-disconnected>
+label-disconnected = no wifi
+
+[module/eth]
+type = internal/network
+interface = ${env:ETHERNET_INTERFACE:}
+interval = 3.0
+
+format-connected-underline = ${xrdb:color2}
+label-connected = %local_ip% ↑%upspeed% ↓%downspeed%
+
+format-disconnected = <label-disconnected>
+label-disconnected = no eth
+
+[module/date]
+type = internal/date
+interval = 1
+
+date = "%a, %b, %Y-%m-%d"
+time = "%H:%M:%S"
+
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = ${xrdb:color12}
+
+label = %date% %time%
+
+[module/volume]
+type = internal/volume
+
+format-volume = <label-volume> <bar-volume>
+label-volume = VOL
+label-volume-foreground = ${root.foreground}
+
+format-muted-foreground = ${colors.foreground-alt}
+label-muted = sound muted
+
+bar-volume-width = 10
+bar-volume-foreground-0 = ${xrdb:color10}
+bar-volume-foreground-1 = ${xrdb:color10}
+bar-volume-foreground-2 = ${xrdb:color10}
+bar-volume-foreground-3 = ${xrdb:color10}
+bar-volume-foreground-4 = ${xrdb:color10}
+bar-volume-foreground-5 = ${xrdb:color11}
+bar-volume-foreground-6 = ${xrdb:color1}
+bar-volume-gradient = false
+bar-volume-indicator = |
+bar-volume-indicator-font = 2
+bar-volume-fill = =
+bar-volume-fill-font = 2
+bar-volume-empty = =
+bar-volume-empty-font = 2
+bar-volume-empty-foreground = ${colors.foreground-alt}
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = ADP1
+full-at = 97
+
+format-charging = CHG: <label-charging>
+format-charging-underline = ${xrdb:color3}
+
+format-discharging = DIS: <label-discharging>
+format-discharging-underline = ${self.format-charging-underline}
+
+format-full-prefix-foreground = ${colors.foreground-alt}
+format-full-underline = ${self.format-charging-underline}
+
+animation-charging-foreground = ${colors.foreground-alt}
+animation-charging-framerate = 750
+
+[module/temperature]
+type = internal/temperature
+thermal-zone = 0
+warn-temperature = 60
+
+format = <label>
+format-underline = ${xrdb:color1}
+format-warn = <label-warn>
+format-warn-underline = ${self.format-underline}
+
+label = %temperature%
+label-warn = %temperature%
+label-warn-foreground = ${colors.secondary}
+
+[settings]
+screenchange-reload = true
